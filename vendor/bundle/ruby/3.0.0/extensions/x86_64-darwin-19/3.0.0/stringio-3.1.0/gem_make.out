@@ -1,0 +1,18 @@
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/stringio-3.1.0/ext/stringio
+/Users/yamadadaichi/.rbenv/versions/3.0.3/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/stringio-3.1.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-jc95j2 sitelibdir\=./.gem.20240413-15433-jc95j2 clean
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/stringio-3.1.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-jc95j2 sitelibdir\=./.gem.20240413-15433-jc95j2
+compiling stringio.c
+linking shared-object stringio.bundle
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/stringio-3.1.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-jc95j2 sitelibdir\=./.gem.20240413-15433-jc95j2 install
+/usr/bin/install -c -m 0755 stringio.bundle ./.gem.20240413-15433-jc95j2
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/stringio-3.1.0/ext/stringio
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-jc95j2 sitelibdir\=./.gem.20240413-15433-jc95j2 clean

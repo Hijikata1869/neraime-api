@@ -1,0 +1,24 @@
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/date-3.3.4/ext/date
+/Users/yamadadaichi/.rbenv/versions/3.0.3/bin/ruby extconf.rb
+checking for rb_category_warn()... yes
+checking for timezone in time.h with  -Werror... yes
+checking for altzone in time.h with  -Werror... no
+creating Makefile
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/date-3.3.4/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-pvn0x2 sitelibdir\=./.gem.20240413-15433-pvn0x2 clean
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/date-3.3.4/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-pvn0x2 sitelibdir\=./.gem.20240413-15433-pvn0x2
+compiling date_core.c
+compiling date_parse.c
+compiling date_strftime.c
+compiling date_strptime.c
+linking shared-object date_core.bundle
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/date-3.3.4/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-pvn0x2 sitelibdir\=./.gem.20240413-15433-pvn0x2 install
+/usr/bin/install -c -m 0755 date_core.bundle ./.gem.20240413-15433-pvn0x2
+
+current directory: /Users/yamadadaichi/Documents/dev/neraime/neraime_api/vendor/bundle/ruby/3.0.0/gems/date-3.3.4/ext/date
+make DESTDIR\= sitearchdir\=./.gem.20240413-15433-pvn0x2 sitelibdir\=./.gem.20240413-15433-pvn0x2 clean
