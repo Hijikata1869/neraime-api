@@ -7,7 +7,7 @@ Rails.application.routes.draw do
       resources :stores do
         get 'crowdedness_list', on: :member
       end
-      resources :crowdednesses, except: [:index, :show]
+      resources :crowdednesses, except: [:index, :show, :update]
     end
   end
 end
