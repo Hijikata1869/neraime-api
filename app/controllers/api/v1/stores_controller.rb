@@ -46,6 +46,16 @@ module Api
         end
       end
 
+      def crowdedness_list
+        store = Store.find(params[:id])
+        store_crowdedness_list = store.crowdednesses.to_a
+        if store_crowdedness_list.present?
+          render json: { store_crowdedness_list: store_crowdedness_list }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       private
       def store_create_params
         params.require(:store).permit(:name, :address, :prefecture_id)

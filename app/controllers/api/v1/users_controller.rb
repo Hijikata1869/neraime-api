@@ -38,6 +38,16 @@ module Api
         end
       end
 
+      def crowdedness_list
+        user = User.find(params[:id])
+        user_crowdednesses = user.crowdednesses.to_a
+        if user_crowdednesses.present?
+          render json: { user_crowdedness: user_crowdednesses }, status: :ok
+        else
+          render json: {}, staus: 404
+        end
+      end
+
       private
       def user_create_params
         params.require(:user).permit(:nickname, :email, :password, :password_confirmation)
