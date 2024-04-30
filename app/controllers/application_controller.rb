@@ -5,6 +5,4 @@ class ApplicationController < ActionController::API
     token = JWT.encode(payload, secret_key, 'HS256')
     return token
   end
-
-  
 end
