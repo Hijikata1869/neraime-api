@@ -1,6 +1,7 @@
-module Api 
-  module V1 
+module Api
+  module V1
     class UsersController < ApplicationController
+      before_action :authenticate_user, only: [:update, :destroy]
 
       def create
         user = User.new(user_create_params)
@@ -11,7 +12,7 @@ module Api
           render json: {}, status: 422
         end
       end
-      
+
       def show
         user = User.find(params[:id])
         if user.present?
@@ -23,8 +24,11 @@ module Api
 
       def update
         user = User.find(params[:id])
-        if user.update(user_update_params)
-          render json: { user: user }, status: :ok
+        current_user = fetch_current_user
+
+        if user.id == current_user.id
+          user.update(user_update_params)
+          render json: {}, status: :ok
         else
           render json: {}, status: 422
         end
@@ -32,7 +36,9 @@ module Api
 
       def destroy
         user = User.find(params[:id])
-        if user.destroy
+        current_user = fetch_current_user
+        if user.id == current_user.id
+          user.destroy
           render json: {}, status: :ok
         else
           render json: {}, status: 500

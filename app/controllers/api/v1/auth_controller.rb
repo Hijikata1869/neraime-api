@@ -10,6 +10,15 @@ module Api
           render json: {}, status: 400
         end
       end
+
+      def current_user
+        current_user = fetch_current_user
+        if current_user
+          render json: { current_user: current_user }, stauts: :ok
+        else
+          render json: {}, status: 401
+        end
+      end
     end
   end
 end
