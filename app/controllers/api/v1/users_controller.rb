@@ -1,6 +1,7 @@
-module Api 
-  module V1 
+module Api
+  module V1
     class UsersController < ApplicationController
+      before_action :authenticate_user, only: [:update, :destroy]
 
       def create
         user = User.new(user_create_params)
@@ -11,7 +12,7 @@ module Api
           render json: {}, status: 422
         end
       end
-      
+
       def show
         user = User.find(params[:id])
         if user.present?

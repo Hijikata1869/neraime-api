@@ -5,4 +5,24 @@ class ApplicationController < ActionController::API
     token = JWT.encode(payload, secret_key, 'HS256')
     return token
   end
+
+  def fetch_current_user
+    token = request.headers['Authorization']
+      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
+      current_user = User.find(decoded_token[0]['user_id'])
+      if current_user
+        return current_user
+      end
+  end
+
+  def authenticate_user
+    token = request.headers['Authorization']
+    begin
+      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
+      current_user = User.find(decoded_token[0]['user_id'])
+      current_user && true
+    rescue
+      render json: {}, status: 401
+    end
+  end
 end

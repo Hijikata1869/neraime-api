@@ -12,12 +12,10 @@ module Api
       end
 
       def current_user
-        token = request.headers['Authorization']
-        begin
-          decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
-          current_user = User.find(decoded_token[0]['user_id'])
+        current_user = fetch_current_user
+        if current_user
           render json: { current_user: current_user }, stauts: :ok
-        rescue
+        else
           render json: {}, status: 401
         end
       end
