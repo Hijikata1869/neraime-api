@@ -24,8 +24,11 @@ module Api
 
       def update
         user = User.find(params[:id])
-        if user.update(user_update_params)
-          render json: { user: user }, status: :ok
+        current_user = fetch_current_user
+
+        if user.id == current_user.id
+          user.update(user_update_params)
+          render json: {}, status: :ok
         else
           render json: {}, status: 422
         end
@@ -33,7 +36,9 @@ module Api
 
       def destroy
         user = User.find(params[:id])
-        if user.destroy
+        current_user = fetch_current_user
+        if user.id == current_user.id
+          user.destroy
           render json: {}, status: :ok
         else
           render json: {}, status: 500
