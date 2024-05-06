@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       end
       resources :crowdednesses, except: [:index, :show, :update]
       post 'auth', to: 'auth#create'
+      get 'current_user', to: 'auth#current_user'
     end
   end
 end
