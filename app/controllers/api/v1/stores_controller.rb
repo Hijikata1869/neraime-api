@@ -20,9 +20,8 @@ module Api
 
       def show
         store = Store.find(params[:id])
-        updated_store = store.convert_prefecture_id_to_name
-        if updated_store.present?
-          render json: { store: updated_store }, stauts: :ok
+        if store.present?
+          render json: { store: store }, stauts: :ok
         else
           render json: {}, stauts: 404
         end
