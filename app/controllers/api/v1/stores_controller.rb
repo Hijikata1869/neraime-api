@@ -1,5 +1,5 @@
-module Api 
-  module V1 
+module Api
+  module V1
     class StoresController < ApplicationController
       before_action :convert_prefecture_name_to_id, only: [:create, :update]
 
@@ -51,6 +51,15 @@ module Api
         store_crowdedness_list = store.crowdednesses.to_a
         if store_crowdedness_list.present?
           render json: { store_crowdedness_list: store_crowdedness_list }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
+      def show_by_name
+        store = Store.find_by(name: params[:name])
+        if store.present?
+          render json: { store: store }, status: :ok
         else
           render json: {}, status: 404
         end
