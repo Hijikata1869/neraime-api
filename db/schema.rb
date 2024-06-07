@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_16_115916) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_04_093126) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,7 +19,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_16_115916) do
     t.bigint "store_id", null: false
     t.string "day_of_week", null: false
     t.string "time", null: false
-    t.string "number_of_people", null: false
     t.string "level", null: false
     t.text "memo"
     t.datetime "created_at", null: false
