@@ -91,7 +91,7 @@ module Api
           }
         end
           if result.present?
-            render json: {latest_crowdedness_reviews: result}, status: ok
+            render json: {latest_crowdedness_reviews: result}, status: :ok
           else
             render json: {}, status: 404
           end
