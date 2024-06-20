@@ -80,6 +80,7 @@ module Api
         result = store_crowdedness_with_memo.map do |crowdedness|
           {
             id: crowdedness.id,
+            user_id: crowdedness.user_id,
             nickname: crowdedness.user.nickname,
             store_id: crowdedness.store_id,
             day_of_week: crowdedness.day_of_week,
