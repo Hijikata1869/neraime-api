@@ -76,7 +76,7 @@ module Api
       end
 
       def latest_store_reviews
-        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc)
+        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc).limit(3)
         result = store_crowdedness_with_memo.map do |crowdedness|
           {
             id: crowdedness.id,
