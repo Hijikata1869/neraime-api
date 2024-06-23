@@ -55,6 +55,72 @@ module Api
         end
       end
 
+      def dayly_crowdedness_list
+        dayly_store_crowdednesses = Crowdedness.where(store_id: params[:id], day_of_week: params[:day_of_week])
+        counted_dayly_store_crowdedness = dayly_store_crowdednesses.group(:time, :level).count
+
+        result = Hash.new { |hash, key| hash[key] = {"空いてる" => 0, "普通" => 0, "混雑" => 0, "空き無し" => 0} }
+
+        counted_dayly_store_crowdedness.each do |key, value|
+          time, level = key
+          result[time][level] = value
+        end
+
+        result = result.map { |time, levels| levels.merge("time" => time) }
+
+        if result.present?
+          render json: { dayly_store_crowdedness_list: result}, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
+      def latest_store_reviews
+        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc).limit(3)
+        result = store_crowdedness_with_memo.map do |crowdedness|
+          {
+            id: crowdedness.id,
+            user_id: crowdedness.user_id,
+            nickname: crowdedness.user.nickname,
+            store_id: crowdedness.store_id,
+            day_of_week: crowdedness.day_of_week,
+            time: crowdedness.time,
+            level: crowdedness.level,
+            memo: crowdedness.memo,
+            created_at: crowdedness.created_at,
+            updated_at: crowdedness.updated_at
+          }
+        end
+          if result.present?
+            render json: {latest_store_reviews: result}, status: :ok
+          else
+            render json: {}, status: 404
+          end
+      end
+
+      def all_store_reviews
+        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc)
+        result = store_crowdedness_with_memo.map do |crowdedness|
+          {
+            id: crowdedness.id,
+            user_id: crowdedness.user_id,
+            nickname: crowdedness.user.nickname,
+            store_id: crowdedness.store_id,
+            day_of_week: crowdedness.day_of_week,
+            time: crowdedness.time,
+            level: crowdedness.level,
+            memo: crowdedness.memo,
+            created_at: crowdedness.created_at,
+            updated_at: crowdedness.updated_at
+          }
+        end
+        if result.present?
+          render json: { store_reviews: result }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       def show_by_name
         store = Store.find_by(name: params[:name])
         if store.present?

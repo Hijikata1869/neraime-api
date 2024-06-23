@@ -1,6 +1,7 @@
-module Api 
-  module V1 
+module Api
+  module V1
     class CrowdednessesController < ApplicationController
+      before_action :authenticate_user, only: [:create, :destroy]
 
       def create
         crowdedness = Crowdedness.new(crowdedness_create_params)
@@ -22,7 +23,7 @@ module Api
 
       private
       def crowdedness_create_params
-        params.require(:crowdedness).permit(:user_id, :store_id, :day_of_week, :time, :number_of_people, :level, :memo)
+        params.require(:crowdedness).permit(:user_id, :store_id, :day_of_week, :time, :level, :memo)
       end
 
     end
