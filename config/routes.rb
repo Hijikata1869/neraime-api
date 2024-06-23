@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         get 'crowdedness_list', on: :member
         get 'dayly_crowdedness_list', on: :member
         get 'latest_store_reviews', on: :member
+        get 'all_store_reviews', on: :member
       end
       resources :crowdednesses, except: [:index, :show, :update]
     end

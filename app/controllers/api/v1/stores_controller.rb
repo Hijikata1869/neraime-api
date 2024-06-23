@@ -98,6 +98,29 @@ module Api
           end
       end
 
+      def all_store_reviews
+        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc)
+        result = store_crowdedness_with_memo.map do |crowdedness|
+          {
+            id: crowdedness.id,
+            user_id: crowdedness.user_id,
+            nickname: crowdedness.user.nickname,
+            store_id: crowdedness.store_id,
+            day_of_week: crowdedness.day_of_week,
+            time: crowdedness.time,
+            level: crowdedness.level,
+            memo: crowdedness.memo,
+            created_at: crowdedness.created_at,
+            updated_at: crowdedness.updated_at
+          }
+        end
+        if result.present?
+          render json: { store_reviews: result }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       def show_by_name
         store = Store.find_by(name: params[:name])
         if store.present?
