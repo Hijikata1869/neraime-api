@@ -1,6 +1,7 @@
 module Api
   module V1
     class StoresController < ApplicationController
+      before_action :authenticate_user, only: [:create]
       before_action :convert_prefecture_name_to_id, only: [:create, :update]
 
       def index
@@ -12,7 +13,7 @@ module Api
       def create
         store = Store.new(store_create_params)
         if store.save
-          render json: {}, stauts: :ok
+          render json: { store: store }, stauts: :ok
         else
           render json: {}, status: 422
         end
