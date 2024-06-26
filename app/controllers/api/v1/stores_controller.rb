@@ -131,6 +131,15 @@ module Api
         end
       end
 
+      def show_by_address
+        store = Store.find_by(address: params[:address])
+        if store.present?
+          render json: { store: store }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       private
       def store_create_params
         params.require(:store).permit(:name, :address, :prefecture_id)

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       post 'auth', to: 'auth#create'
       get 'current_user', to: 'auth#current_user'
       get 'stores/show_by_name', to: 'stores#show_by_name'
+      get 'stores/show_by_address', to: 'stores#show_by_address'
       resources :users, except: :index do
         get 'crowdedness_list', on: :member
       end
