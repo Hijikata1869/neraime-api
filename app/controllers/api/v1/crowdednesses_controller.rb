@@ -8,7 +8,7 @@ module Api
         if crowdedness.save
           render json: {}, status: :ok
         else
-          render json: {}, stauts: 422
+          render json: {}, status: 422
         end
       end
 
