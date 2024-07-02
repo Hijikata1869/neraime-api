@@ -3,6 +3,7 @@ module Api
     class StoresController < ApplicationController
       before_action :authenticate_user, only: [:create]
       before_action :convert_prefecture_name_to_id, only: [:create, :update]
+      before_action :change_prefecture_name_to_id, only: [:show_by_prefecture_name]
 
       def index
         stores = Store.all
@@ -140,6 +141,15 @@ module Api
         end
       end
 
+      def show_by_prefecture_name
+        stores = Store.where(prefecture_id: params[:prefecture_id]);
+        if stores.present?
+          render json: { stores: stores }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       private
       def store_create_params
         params.require(:store).permit(:name, :address, :prefecture_id)
@@ -154,6 +164,16 @@ module Api
         prefecture = Prefecture.find_by(name: prefecture_name)
         if prefecture
           params[:store][:prefecture_id] = prefecture.id
+        else
+          render json: {}, status: 422
+        end
+      end
+
+      def change_prefecture_name_to_id
+        prefecture_name = params[:prefecture]
+        prefecture = Prefecture.find_by(name: prefecture_name)
+        if prefecture
+          params[:prefecture_id] = prefecture.id
         else
           render json: {}, status: 422
         end
