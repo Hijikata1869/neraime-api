@@ -55,6 +55,18 @@ module Api
         end
       end
 
+      def formatted_crowdedness_list
+        user_crowdedness = Crowdedness.includes(:store).where(user_id: params[:id])
+        formatted_user_crowdedness = user_crowdedness.map do |crowdedness|
+          crowdedness.attributes.merge('store_name' => crowdedness.store.name)
+        end
+        if formatted_user_crowdedness
+          render json: { user_crowdedness: formatted_user_crowdedness }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       private
       def user_create_params
         params.require(:user).permit(:nickname, :email, :password, :password_confirmation)
