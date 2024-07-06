@@ -56,7 +56,7 @@ module Api
       end
 
       def formatted_crowdedness_list
-        user_crowdedness = Crowdedness.includes(:store).where(user_id: params[:id])
+        user_crowdedness = Crowdedness.includes(:store).where(user_id: params[:id]).order(created_at: :desc)
         formatted_user_crowdedness = user_crowdedness.map do |crowdedness|
           crowdedness.attributes.merge('store_name' => crowdedness.store.name)
         end
