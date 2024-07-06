@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       get 'stores/show_by_name', to: 'stores#show_by_name'
       get 'stores/show_by_address', to: 'stores#show_by_address'
       get 'stores/show_by_prefecture_name', to: 'stores#show_by_prefecture_name'
+      get 'crowdedness/formatted_latest_crowdednesses_list', to: 'crowdednesses#formatted_latest_crowdednesses_list'
       resources :users, except: :index do
         get 'crowdedness_list', on: :member
         get 'formatted_crowdedness_list', on: :member
