@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         get 'dayly_crowdedness_list', on: :member
         get 'latest_store_reviews', on: :member
         get 'all_store_reviews', on: :member
+        resource :favorites, only: [:create, :destroy]
       end
       resources :crowdednesses, except: [:index, :show, :update]
     end
