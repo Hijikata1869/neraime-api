@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :users, except: :index do
         get 'crowdedness_list', on: :member
         get 'formatted_crowdedness_list', on: :member
+        get 'favorite_stores', on: :member
       end
       resources :stores do
         get 'crowdedness_list', on: :member
