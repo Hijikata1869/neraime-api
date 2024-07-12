@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_04_093126) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_09_020708) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_04_093126) do
     t.datetime "updated_at", null: false
     t.index ["store_id"], name: "index_crowdednesses_on_store_id"
     t.index ["user_id"], name: "index_crowdednesses_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "store_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["store_id"], name: "index_favorites_on_store_id"
+    t.index ["user_id", "store_id"], name: "index_favorites_on_user_id_and_store_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "prefectures", force: :cascade do |t|
@@ -54,5 +64,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_04_093126) do
 
   add_foreign_key "crowdednesses", "stores"
   add_foreign_key "crowdednesses", "users"
+  add_foreign_key "favorites", "stores"
+  add_foreign_key "favorites", "users"
   add_foreign_key "stores", "prefectures"
 end

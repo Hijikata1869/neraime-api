@@ -67,6 +67,16 @@ module Api
         end
       end
 
+      def favorite_stores
+        user = User.find(params[:id])
+        favorite_stores = user.favorite_stores
+        if favorite_stores
+          render json: { favorite_stores: favorite_stores }, status: :ok
+        else
+          render json: {}, status: 404
+        end
+      end
+
       private
       def user_create_params
         params.require(:user).permit(:nickname, :email, :password, :password_confirmation)

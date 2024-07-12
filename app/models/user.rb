@@ -2,6 +2,8 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :crowdednesses, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  has_many :favorite_stores, through: :favorites, source: :store
 
   validates :nickname, :email, :password_digest, presence: true
   validates :nickname, length: { maximum: 30 }
