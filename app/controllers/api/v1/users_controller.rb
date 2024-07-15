@@ -77,6 +77,17 @@ module Api
         end
       end
 
+      def image_upload
+        user = User.find(params[:id])
+        user.profile_image.attach(params[:profile_image])
+        if user.save
+          url = url_for(user.profile_image)
+          render json: { url: url }, status: :ok
+        else
+          render json: {}, status: 422
+        end
+      end
+
       private
       def user_create_params
         params.require(:user).permit(:nickname, :email, :password, :password_confirmation)
