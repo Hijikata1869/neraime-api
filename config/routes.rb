@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         get 'crowdedness_list', on: :member
         get 'formatted_crowdedness_list', on: :member
         get 'favorite_stores', on: :member
+        post 'image_upload', on: :member
       end
       resources :stores do
         get 'crowdedness_list', on: :member

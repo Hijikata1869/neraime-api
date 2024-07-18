@@ -78,8 +78,9 @@ module Api
       end
 
       def latest_store_reviews
-        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc).limit(3)
+        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").includes(:user).order(created_at: :desc).limit(3)
         result = store_crowdedness_with_memo.map do |crowdedness|
+          profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
           {
             id: crowdedness.id,
             user_id: crowdedness.user_id,
@@ -90,7 +91,8 @@ module Api
             level: crowdedness.level,
             memo: crowdedness.memo,
             created_at: crowdedness.created_at,
-            updated_at: crowdedness.updated_at
+            updated_at: crowdedness.updated_at,
+            url: profile_image_url
           }
         end
           if result.present?
@@ -101,8 +103,9 @@ module Api
       end
 
       def all_store_reviews
-        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").order(created_at: :desc)
+        store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").includes(:user).order(created_at: :desc)
         result = store_crowdedness_with_memo.map do |crowdedness|
+          profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
           {
             id: crowdedness.id,
             user_id: crowdedness.user_id,
@@ -113,7 +116,8 @@ module Api
             level: crowdedness.level,
             memo: crowdedness.memo,
             created_at: crowdedness.created_at,
-            updated_at: crowdedness.updated_at
+            updated_at: crowdedness.updated_at,
+            url: profile_image_url
           }
         end
         if result.present?
