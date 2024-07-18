@@ -1,7 +1,7 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_action :authenticate_user, only: [:update, :destroy]
+      before_action :authenticate_user, only: [:update, :destroy, :image_upload]
 
       def create
         user = User.new(user_create_params)
@@ -16,9 +16,11 @@ module Api
       def show
         user = User.find(params[:id])
         if user.present?
-          render json: { user: user }, status: :ok
+          profile_image_url = user.profile_image.present? ? url_for(user.profile_image) : ""
+          user_with_profile_image = user.attributes.merge('url' => profile_image_url)
+          render json: { user: user_with_profile_image }, status: :ok
         else
-          render json: {}, stauts: 404
+          render json: {}, status: 404
         end
       end
 
