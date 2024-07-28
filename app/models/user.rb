@@ -10,4 +10,6 @@ class User < ApplicationRecord
   validates :nickname, length: { maximum: 30 }
   validates :self_introduction, length: { maximum: 200 }
 
+  validates :email, uniqueness: { case_sensitive: false }
+
 end
