@@ -14,7 +14,7 @@ module Api
       def create
         store = Store.new(store_create_params)
         if store.save
-          render json: { store: store }, stauts: :ok
+          render json: { store: store }, status: :ok
         else
           render json: {}, status: 422
         end
@@ -23,9 +23,9 @@ module Api
       def show
         store = Store.find(params[:id])
         if store.present?
-          render json: { store: store }, stauts: :ok
+          render json: { store: store }, status: :ok
         else
-          render json: {}, stauts: 404
+          render json: {}, status: 404
         end
       end
 
@@ -43,7 +43,7 @@ module Api
         if store.destroy
           render json: {}, status: :ok
         else
-          render json: {}, stauts: 500
+          render json: {}, status: 500
         end
       end
 
