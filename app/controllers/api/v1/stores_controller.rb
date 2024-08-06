@@ -4,6 +4,7 @@ module Api
       before_action :authenticate_user, only: [:create]
       before_action :convert_prefecture_name_to_id, only: [:create, :update]
       before_action :change_prefecture_name_to_id, only: [:show_by_prefecture_name]
+      before_action :find_store, only: [:show, :update, :destroy, :crowdedness_list]
 
       def index
         stores = Store.all
@@ -21,40 +22,28 @@ module Api
       end
 
       def show
-        store = Store.find(params[:id])
-        if store.present?
-          render json: { store: store }, status: :ok
-        else
-          render json: {}, status: 404
-        end
+        render json: { store: @store }, status: :ok
       end
 
       def update
-        store = Store.find(params[:id])
-        if store.update(store_update_params)
+        if @store.update(store_update_params)
           render json: {}, status: :ok
         else
-          render json: {}, status: 422
+          render json: { error: @store.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
       def destroy
-        store = Store.find(params[:id])
-        if store.destroy
+        if @store.destroy
           render json: {}, status: :ok
         else
-          render json: {}, status: 500
+          render json: { error: "削除できませんでした" }, status: 500
         end
       end
 
       def crowdedness_list
-        store = Store.find(params[:id])
-        store_crowdedness_list = store.crowdednesses.to_a
-        if store_crowdedness_list.present?
-          render json: { store_crowdedness_list: store_crowdedness_list }, status: :ok
-        else
-          render json: {}, status: 404
-        end
+        store_crowdedness_list = @store.crowdednesses.to_a
+        render json: { store_crowdedness_list: store_crowdedness_list }, status: :ok
       end
 
       def dayly_crowdedness_list
@@ -62,12 +51,10 @@ module Api
         counted_dayly_store_crowdedness = dayly_store_crowdednesses.group(:time, :level).count
 
         result = Hash.new { |hash, key| hash[key] = {"空いてる" => 0, "普通" => 0, "混雑" => 0, "空き無し" => 0} }
-
         counted_dayly_store_crowdedness.each do |key, value|
           time, level = key
           result[time][level] = value
         end
-
         result = result.map { |time, levels| levels.merge("time" => time) }
 
         if result.present?
@@ -79,22 +66,7 @@ module Api
 
       def latest_store_reviews
         store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").includes(:user).order(created_at: :desc).limit(3)
-        result = store_crowdedness_with_memo.map do |crowdedness|
-          profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
-          {
-            id: crowdedness.id,
-            user_id: crowdedness.user_id,
-            nickname: crowdedness.user.nickname,
-            store_id: crowdedness.store_id,
-            day_of_week: crowdedness.day_of_week,
-            time: crowdedness.time,
-            level: crowdedness.level,
-            memo: crowdedness.memo,
-            created_at: crowdedness.created_at,
-            updated_at: crowdedness.updated_at,
-            url: profile_image_url
-          }
-        end
+        result = format_crowdedness(store_crowdedness_with_memo)
           if result.present?
             render json: {latest_store_reviews: result}, status: :ok
           else
@@ -104,22 +76,7 @@ module Api
 
       def all_store_reviews
         store_crowdedness_with_memo = Crowdedness.where(store_id: params[:id]).where.not(memo: "").includes(:user).order(created_at: :desc)
-        result = store_crowdedness_with_memo.map do |crowdedness|
-          profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
-          {
-            id: crowdedness.id,
-            user_id: crowdedness.user_id,
-            nickname: crowdedness.user.nickname,
-            store_id: crowdedness.store_id,
-            day_of_week: crowdedness.day_of_week,
-            time: crowdedness.time,
-            level: crowdedness.level,
-            memo: crowdedness.memo,
-            created_at: crowdedness.created_at,
-            updated_at: crowdedness.updated_at,
-            url: profile_image_url
-          }
-        end
+        result = format_crowdedness(store_crowdedness_with_memo)
         if result.present?
           render json: { store_reviews: result }, status: :ok
         else
@@ -129,7 +86,7 @@ module Api
 
       def show_by_name
         store = Store.find_by(name: params[:name])
-        if store.present?
+        if store
           render json: { store: store }, status: :ok
         else
           render json: {}, status: 404
@@ -138,7 +95,7 @@ module Api
 
       def show_by_address
         store = Store.find_by(address: params[:address])
-        if store.present?
+        if store
           render json: { store: store }, status: :ok
         else
           render json: {}, status: 404
@@ -147,7 +104,7 @@ module Api
 
       def show_by_prefecture_name
         stores = Store.where(prefecture_id: params[:prefecture_id]);
-        if stores.present?
+        if stores.any?
           render json: { stores: stores }, status: :ok
         else
           render json: {}, status: 404
@@ -195,6 +152,18 @@ module Api
             created_at: store.created_at,
             updated_at: store.updated_at
           }
+        end
+      end
+
+      def find_store
+        @store = Store.find_by(id: params[:id])
+        render json: { error: "店舗が見つかりませんでした" }, status: :not_found unless @store
+      end
+
+      def format_crowdedness(crowdednesses)
+        crowdednesses.map do |crowdedness|
+          profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
+          crowdedness.as_json.merge(nickname: crowdedness.user.nickname, url: profile_image_url)
         end
       end
 
