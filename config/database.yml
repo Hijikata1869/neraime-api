@@ -79,6 +79,7 @@ test:
 #
 production:
   <<: *default
-  database: neraime_api_production
-  username: neraime_api
-  password: <%= ENV["NERAIME_API_DATABASE_PASSWORD"] %>
+  database: neraime-rds
+  username: <%= Rails.application.credentials.db[:user_name] %>
+  password: <%= Rails.application.credentials.db[:password] %>
+  host: <%= Rails.application.credentials.db[:endpoint] %>
