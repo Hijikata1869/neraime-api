@@ -49,3 +49,5 @@ group :development do
 end
 
 gem 'jwt'
+
+gem "aws-sdk-s3", require: false
