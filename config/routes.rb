@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'auth', to: 'auth#create'
       get 'current_user', to: 'auth#current_user'
+      post 'guest_login', to: 'auth#guest_login'
       get 'stores/show_by_name', to: 'stores#show_by_name'
       get 'stores/show_by_address', to: 'stores#show_by_address'
       get 'stores/show_by_prefecture_name', to: 'stores#show_by_prefecture_name'
