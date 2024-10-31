@@ -19,6 +19,13 @@ module Api
           render json: {}, status: 401
         end
       end
+
+      def guest_login
+        user = User.find_by(email: "guest@example.com")
+        token = create_token(user.id)
+        render json: { token: token }, status: :ok
+      end
+
     end
   end
 end
