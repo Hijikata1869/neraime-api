@@ -28,11 +28,10 @@ module Api
         user = User.find(params[:id])
         current_user = fetch_current_user
 
-        if user.id == current_user.id
-          user.update(user_update_params)
+        if user.id == current_user.id && user.update(user_update_params)
           render json: {}, status: :ok
         else
-          render json: {}, status: 422
+          render json: { message: user.errors.full_messages.join(", ") }, status: 422
         end
       end
 

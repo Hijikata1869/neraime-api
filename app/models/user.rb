@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  before_update :prevent_guest_information_update, if: :guest_user?
+
   has_secure_password
   has_one_attached :profile_image
 
@@ -11,5 +13,15 @@ class User < ApplicationRecord
   validates :self_introduction, length: { maximum: 200 }
 
   validates :email, uniqueness: { case_sensitive: false }
+
+  private
+    def prevent_guest_information_update
+        errors.add(:base, "ゲストユーザーのユーザーの情報は更新できません。")
+        throw(:abort)
+    end
+
+    def guest_user?
+      persisted? && email_was == "guest@example.com"
+    end
 
 end
