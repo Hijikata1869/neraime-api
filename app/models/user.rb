@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  before_update :prevent_guest_information_update, if: :guest_user?
+  before_update :prevent_guest_user_action, if: :guest_user?
+  before_destroy :prevent_guest_user_action, if: :guest_user?
 
   has_secure_password
   has_one_attached :profile_image
@@ -15,7 +16,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: { case_sensitive: false }
 
   private
-    def prevent_guest_information_update
+    def prevent_guest_user_action
         errors.add(:base, "ゲストユーザーのユーザーの情報は更新できません。")
         throw(:abort)
     end

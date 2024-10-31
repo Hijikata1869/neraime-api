@@ -38,11 +38,10 @@ module Api
       def destroy
         user = User.find(params[:id])
         current_user = fetch_current_user
-        if user.id == current_user.id
-          user.destroy
+        if user.id == current_user.id && user.destroy
           render json: {}, status: :ok
         else
-          render json: {}, status: 500
+          render json: { message: user.errors.full_messages.join(", ") }, status: 500
         end
       end
 
