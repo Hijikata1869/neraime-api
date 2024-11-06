@@ -17,7 +17,7 @@ class User < ApplicationRecord
 
   private
     def prevent_guest_user_action
-        errors.add(:base, "ゲストユーザーのユーザーの情報は更新できません。")
+        errors.add(:base, "ゲストユーザーのユーザー情報は更新できません")
         throw(:abort)
     end
 
