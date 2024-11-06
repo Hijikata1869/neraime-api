@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   before_update :prevent_guest_user_action, if: :guest_user?
   before_destroy :prevent_guest_user_action, if: :guest_user?
+  before_save :prevent_guest_user_action, if: :guest_user?
 
   has_secure_password
   has_one_attached :profile_image
