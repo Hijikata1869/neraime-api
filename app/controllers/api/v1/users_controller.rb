@@ -84,7 +84,7 @@ module Api
           url = url_for(user.profile_image)
           render json: { url: url }, status: :ok
         else
-          render json: {}, status: 422
+          render json: { message: user.errors.full_messages.join(", ")}, status: 422
         end
       end
 
