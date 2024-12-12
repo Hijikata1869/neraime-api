@@ -1,6 +1,8 @@
 class Crowdedness < ApplicationRecord
   VALID_TIME = (0..23).map { |i| "#{i}:00" }
 
+  has_many :usefuls
+
   belongs_to :user
   belongs_to :store
 
