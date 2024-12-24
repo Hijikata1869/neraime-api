@@ -16,7 +16,7 @@ module Api
       def destroy
         current_user = fetch_current_user
         useful = Useful.find_by(user_id: current_user.id, crowdedness_id: params[:crowdedness_id])
-        if useful.destroy
+        if useful&.destroy
           render json: {}, status: :ok
         else
           render json: { message: useful.errors.full_messages.join(", ") }, status: 500
