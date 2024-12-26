@@ -25,7 +25,8 @@ module Api
         latest_crowdedness = Crowdedness.includes(:user, :store).order(created_at: :desc).limit(3)
         formatted_latest_crowdedness = latest_crowdedness.map do |crowdedness|
           profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
-          crowdedness.attributes.merge('nickname' => crowdedness.user.nickname, 'store_name' => crowdedness.store.name, 'url' =>profile_image_url)
+          number_of_usefuls = crowdedness.count_usefuls
+          crowdedness.attributes.merge('nickname' => crowdedness.user.nickname, 'store_name' => crowdedness.store.name, 'url' =>profile_image_url, 'number_of_usefuls' => number_of_usefuls)
         end
         if formatted_latest_crowdedness
           render json: { latest_crowdedness: formatted_latest_crowdedness }, status: :ok

@@ -11,4 +11,9 @@ class Crowdedness < ApplicationRecord
   validates :time, inclusion: { in: VALID_TIME, message: "%{value} は無効な値です" }
   validates :level, inclusion: { in: %w(空いてる 普通 混雑 空き無し), message: "%{value}は無効な値です"}
   validates :memo, length: { maximum: 300 }
+
+  def count_usefuls
+    self.usefuls.count
+  end
+
 end
