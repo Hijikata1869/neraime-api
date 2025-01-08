@@ -23,10 +23,14 @@ module Api
 
       def formatted_latest_crowdednesses_list
         latest_crowdedness = Crowdedness.includes(:user, :store).order(created_at: :desc).limit(3)
+        if logged_in?
+          current_user = fetch_current_user
+        end
         formatted_latest_crowdedness = latest_crowdedness.map do |crowdedness|
           profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
           number_of_usefuls = crowdedness.count_usefuls
-          crowdedness.attributes.merge('nickname' => crowdedness.user.nickname, 'store_name' => crowdedness.store.name, 'url' =>profile_image_url, 'number_of_usefuls' => number_of_usefuls)
+          is_useful = current_user ? crowdedness.is_useful_by?(current_user) : false
+          crowdedness.attributes.merge('nickname' => crowdedness.user.nickname, 'store_name' => crowdedness.store.name, 'url' =>profile_image_url, 'number_of_usefuls' => number_of_usefuls, 'is_useful' => is_useful)
         end
         if formatted_latest_crowdedness
           render json: { latest_crowdedness: formatted_latest_crowdedness }, status: :ok

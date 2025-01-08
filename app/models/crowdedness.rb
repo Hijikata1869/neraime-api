@@ -16,4 +16,8 @@ class Crowdedness < ApplicationRecord
     self.usefuls.count
   end
 
+  def is_useful_by?(user)
+    usefuls.where(user_id: user.id).exists?
+  end
+
 end
