@@ -161,9 +161,13 @@ module Api
       end
 
       def format_crowdedness(crowdednesses)
+        if logged_in?
+          current_user = fetch_current_user
+        end
         crowdednesses.map do |crowdedness|
           profile_image_url = crowdedness.user.profile_image.present? ? url_for(crowdedness.user.profile_image) : ""
-          crowdedness.as_json.merge(nickname: crowdedness.user.nickname, url: profile_image_url)
+          is_useful = current_user ? crowdedness.is_useful_by?(current_user) : false
+          crowdedness.as_json.merge(nickname: crowdedness.user.nickname, url: profile_image_url, number_of_usefuls: crowdedness.count_usefuls, is_useful: is_useful)
         end
       end
 
