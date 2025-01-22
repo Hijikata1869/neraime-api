@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :crowdednesses, dependent: :destroy
   has_many :favorites, dependent: :destroy
   has_many :favorite_stores, through: :favorites, source: :store
-  has_many :usefuls
+  has_many :usefuls, dependent: :destroy
 
   validates :nickname, :email, :password_digest, presence: true
   validates :nickname, length: { maximum: 30 }
