@@ -1,6 +1,8 @@
 class Crowdedness < ApplicationRecord
   VALID_TIME = (0..23).map { |i| "#{i}:00" }
 
+  has_many :usefuls, dependent: :destroy
+
   belongs_to :user
   belongs_to :store
 
@@ -9,4 +11,13 @@ class Crowdedness < ApplicationRecord
   validates :time, inclusion: { in: VALID_TIME, message: "%{value} は無効な値です" }
   validates :level, inclusion: { in: %w(空いてる 普通 混雑 空き無し), message: "%{value}は無効な値です"}
   validates :memo, length: { maximum: 300 }
+
+  def count_usefuls
+    self.usefuls.count
+  end
+
+  def is_useful_by?(user)
+    usefuls.where(user_id: user.id).exists?
+  end
+
 end

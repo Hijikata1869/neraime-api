@@ -56,9 +56,11 @@ module Api
       end
 
       def formatted_crowdedness_list
-        user_crowdedness = Crowdedness.includes(:store).where(user_id: params[:id]).order(created_at: :desc)
+        user = User.find(params[:id])
+        user_crowdedness = Crowdedness.includes(:store).where(user_id: user.id).order(created_at: :desc)
         formatted_user_crowdedness = user_crowdedness.map do |crowdedness|
-          crowdedness.attributes.merge('store_name' => crowdedness.store.name)
+          is_useful = crowdedness.is_useful_by?(user)
+          crowdedness.attributes.merge('store_name' => crowdedness.store.name, 'number_of_usefuls' => crowdedness.count_usefuls, 'is_useful' => is_useful)
         end
         if formatted_user_crowdedness
           render json: { user_crowdedness: formatted_user_crowdedness }, status: :ok

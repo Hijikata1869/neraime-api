@@ -23,7 +23,9 @@ Rails.application.routes.draw do
         get 'all_store_reviews', on: :member
         resource :favorites, only: [:create, :destroy]
       end
-      resources :crowdednesses, except: [:index, :show, :update]
+      resources :crowdednesses, except: [:index, :show, :update] do
+        resource :usefuls, only: [:create, :destroy]
+      end
     end
   end
 end

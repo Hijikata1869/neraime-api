@@ -25,4 +25,17 @@ class ApplicationController < ActionController::API
       render json: {}, status: 401
     end
   end
+
+  def logged_in?
+    token = request.headers['Authorization']
+    return false unless token
+    begin
+      decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: 'HS256' })
+      current_user = User.find(decoded_token[0]['user_id'])
+      return current_user.present?
+    rescue
+      false
+    end
+  end
+
 end
