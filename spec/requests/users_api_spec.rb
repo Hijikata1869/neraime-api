@@ -82,7 +82,7 @@ RSpec.describe "UsersApis", type: :request do
         expect(response).to_not have_http_status(:success)
       end
 
-      it "ゲストユーザーは削除できないこt" do
+      it "ゲストユーザーは削除できないこと" do
         token = generate_token(@guest_user.id)
         delete "/api/v1/users/#{@guest_user.id}",
         params: {
