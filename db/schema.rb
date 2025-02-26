@@ -66,9 +66,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_12_103116) do
   end
 
   create_table "prefectures", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
     t.index ["name"], name: "index_prefectures_on_name", unique: true
   end
 
