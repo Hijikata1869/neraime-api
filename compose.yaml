@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:14.12
+    environment:
+      POSTGRES_DB: neraime_api_development
+      POSTGRES_USER: neraimie_user
+      POSTGRES_PASSWORD: neraime_password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  api:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/neraime_api
+      - bundle-data:/neraime_api/vendor/bundle
+volumes:
+  db-data:
+  bundle-data:
