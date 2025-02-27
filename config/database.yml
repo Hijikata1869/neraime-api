@@ -60,6 +60,10 @@ development:
 test:
   <<: *default
   database: neraime_api_test
+  username: neraimie_user
+  password: neraime_password
+  host: db
+  port: 5432
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
