@@ -1,0 +1,25 @@
+Store.delete_all
+User.delete_all
+Prefecture.delete_all
+
+prefectures = %w[北海道 青森県 岩手県 宮城県 秋田県 山形県 福島県 茨城県 栃木県 群馬県 埼玉県 千葉県 東京都 神奈川県 新潟県 富山県 石川県 福井県 山梨県 長野県 岐阜県 静岡県 愛知県 三重県 滋賀県 京都府 大阪府 兵庫県 奈良県 和歌山県 鳥取県 島根県 岡山県 広島県 山口県 徳島県 香川県 愛媛県 高知県 福岡県 佐賀県 長崎県 熊本県 大分県 宮崎県 鹿児島県 沖縄県]
+
+prefectures.each do |name|
+  Prefecture.create!(name: name)
+end
+
+prefecture = Prefecture.find_by!(name: "東京都")
+
+User.create!(
+    nickname: "e2euser",
+    email: "e2e@example.com",
+    password: "e2e_pass",
+    password_confirmation: "e2e_pass",
+    self_introduction: "e2e_introduction"
+)
+
+Store.create!(
+    prefecture_id: prefecture.id,
+    name: "e2e_store",
+    address: "e2e_address"
+)
