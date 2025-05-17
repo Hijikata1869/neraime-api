@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:14.12
+    environment:
+      POSTGRES_DB: neraime_api_e2e
+      POSTGRES_USER: neraimie_user
+      POSTGRES_PASSWORD: neraime_password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  e2e:
+    build: .
+    command: /bin/sh -c "rm -rf /neraime_api/tmp/pids/server.pid && bundle exec rails server -b '0.0.0.0' -p 3001"
+    environment:
+      RAILS_ENV: e2e
+    depends_on:
+      - db
+    ports:
+      - "3100:3001"
+    volumes:
+      - .:/neraime_api
+      - bundle-data:/neraime_api/vendor/bundle
+volumes:
+  db-data:
+  bundle-data:

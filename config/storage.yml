@@ -2,6 +2,10 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
+e2e:
+  service: Disk
+  root: <%= Rails.root.join("tmp/storage/e2e") %>
+
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
